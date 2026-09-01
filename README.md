@@ -1,145 +1,300 @@
-# Nmap Scanning Tool (main_v1.7.py)
+﻿# Nmap Scanning Tool
 
-Interactive wrapper around Nmap that makes common scans quick to run and easy to read. It prints a banner, asks for a target and ports, lets you choose a scan type (SYN, Aggressive, OS Detect, NSE vuln checks, and more), and can optionally show only the lines that contain open ports.
+A secure, production-ready CLI wrapper that makes common Nmap scan workflows faster, safer, and easier to run.
 
-> Note: This tool executes the local `nmap` binary. You must have Nmap installed and available on your PATH.
-<br>
+<div align="right">
 
---- 
+[![CI](https://github.com/SagarBiswas-MultiHAT/NmapScanningTool-V1-MAX/actions/workflows/ci.yml/badge.svg)](https://github.com/SagarBiswas-MultiHAT/NmapScanningTool-V1-MAX/actions/workflows/ci.yml)
+&nbsp;
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+&nbsp;
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+&nbsp;
+[![Version](https://img.shields.io/badge/version-2.0.0-brightgreen.svg)](CHANGELOG.md)
 
-### A).
+</div>
 
-![Nmap Scanning Tool](https://imgur.com/GHvPuD6.jpg)
+## What This Project Is
 
----
-
-### B).
-
-![Nmap Scanning Tool](https://imgur.com/zejtHl3.jpg)
-
---- 
-
-<br>
+This project is an interactive and scriptable front-end for Nmap. It helps security engineers, sysadmins, and students run common scans consistently without memorizing long command combinations. You can use preset scan profiles, run custom arguments, and optionally filter output to open ports only. It also adds guardrails like input validation, privilege warnings, and clear error messages.
 
 ## Features
 
-- Target + ports prompt (single port, range like `1-1000`, or leave blank for all `1-65535`)
-- 12 ready-to-use scan profiles:
-  1. SYN (stealth) scan `-sS` + OS detect `-O`
-  2. Aggressive scan `-A` (OS + services + scripts + traceroute)
-  3. Service/version detection `-sV`
-  4. NSE vulnerability scan `--script=vuln`
-  5. Heartbleed test `--script=ssl-heartbleed`
-  6. HTTP security headers `--script=http-security-headers`
-  7. HTTP SQL injection test `--script=http-sql-injection`
-  8. SMB vulnerability scan `--script=smb-vuln*`
-  9. SSL/TLS ciphers `--script=ssl-enum-ciphers`
-  10. Service discovery (default NSE set) `--script=default`
-  11. OS detection only `-O`
-  12. Custom: you type additional Nmap args (e.g., `-sU -T4 --top-ports 200`)
-- Optional output filter: show only lines that contain the word "open"
-- Helpful checks and messages:
-  - Warns if you’re not running with Administrator/root when some scans may need it
-  - Verifies that Nmap is installed and in PATH, with OS-specific tips
+- 12 built-in scan profiles, including SYN, aggressive, OS detection, and vulnerability-focused NSE scans
+- Custom scan mode for advanced Nmap users
+- Interactive prompts for beginner-friendly execution
+- Non-interactive flags for scripting and automation
+- Strict validation for targets, ports, and custom arguments
+- Typed, modular Python architecture with testable services
+- CI pipeline with lint, type-check, tests, build, and dependency audit
+- Docker support for reproducible runtime setup
 
-## Requirements
+## Testing: 
 
-- Python 3.8+ (tested with Python 3)
-- Nmap installed and on PATH
-  - Windows: https://nmap.org/download.html (use the official installer, then restart the terminal)
-  - Linux (Debian/Ubuntu): `sudo apt install nmap`
-  - Linux (RHEL/CentOS): `sudo yum install nmap`
+<b>Terminal 1</b>
+
+```
+┏━(Message from Kali developers)
+┃
+┃ This is a minimal installation of Kali Linux, you likely
+┃ want to install supplementary tools. Learn how:
+┃ ⇒ https://www.kali.org/docs/troubleshooting/common-minimum-setup/
+┃
+┗━(Run: “touch ~/.hushlogin” to hide this message)
+┌──(BlackHAT㉿HP-SAGAR)-[/mnt/h/updatedReposV2/NmapScanningTool-V1-MAX]
+└─$ python3 -m http.server 8000
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+```
+
+When testing OS detection locally, a simple HTTP server was started using python3 -m http.server 8000. This creates a temporary web service listening on port 8000 (0.0.0.0:8000), allowing Nmap to detect at least one open port. OS fingerprinting requires both open and closed ports to accurately analyze TCP/IP behavior. Without an active service, all ports appear closed and OS detection becomes unreliable. Running this lightweight server ensures realistic scan results and validates that the Nmap Scanning Tool correctly performs port discovery and operating system detection.
+
+<b>Terminal 2</b>
+
+```
+┌──(.venv)(BlackHAT㉿HP-SAGAR)-[/mnt/h/updatedReposV2/NmapScanningTool-V1-MAX]
+└─$ python main.py
+ _   _                         ____                        _
+| \ | |_ __ ___   __ _ _ __   / ___|  ___ __ _ _ __  _ __ (_)_ __   __ _ 
+|  \| | '_ ` _ \ / _` | '_ \  \___ \ / __/ _` | '_ \| '_ \| | '_ \ / _` |
+| |\  | | | | | | (_| | |_) |  ___) | (_| (_| | | | | | | | | | | | (_| |
+|_| \_|_| |_| |_|\__,_| .__/  |____/ \___\__,_|_| |_|_| |_|_|_| |_|\__, |
+                      |_|                                          |___/ 
+ _____           _ 
+|_   _|__   ___ | |
+  | |/ _ \ / _ \| |
+  | | (_) | (_) | |
+  |_|\___/ \___/|_|
+
+
+Welcome to Nmap Scanning Tool
+Enter the IP address or hostname to scan: 127.0.0.1
+Enter port(s) or range (e.g., 22,80,443 or 1-1000) [default: 1-65535]: 
+
+Select scan type:
+
+1. SYN Scan - Stealth SYN scan with OS detection.
+2. Aggressive Scan - OS detection, services, scripts, and traceroute.
+3. Service Version Detection - Enumerate service versions.
+4. Vulnerability Scan - Run default vulnerability NSE scripts.
+5. Heartbleed Check - Check for SSL/TLS Heartbleed vulnerability.
+6. HTTP Security Headers - Inspect HTTP security headers.
+7. SQL Injection Script Check - Run HTTP SQL injection NSE script checks.
+8. SMB Vulnerability Scan - Run SMB-focused vulnerability NSE scripts.
+9. SSL/TLS Cipher Enumeration - List supported SSL/TLS cipher suites.
+10. Service Discovery (Default Scripts) - Run default NSE script set.
+11. OS Detection - Detect target operating system.
+12. Custom Scan - Provide custom Nmap arguments.
+
+Enter your choice (1-12): 11
+Warning: selected scan often requires Administrator/root privileges.
+Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-14 00:44 +06
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.000084s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT     STATE SERVICE
+8000/tcp open  http-alt
+Device type: general purpose
+Running: Linux 2.6.X|5.X
+OS CPE: cpe:/o:linux:linux_kernel:2.6.32 cpe:/o:linux:linux_kernel:5 cpe:/o:linux:linux_kernel:6
+OS details: Linux 2.6.32, Linux 5.0 - 6.2
+Network Distance: 0 hops
+
+OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 2.33 seconds
+```
+
+
+
+
+## Quick Start
+
+### Prerequisites
+
+- Python 3.10 or newer
+- Nmap installed and available in your PATH
+  - Windows: https://nmap.org/download
+  - Debian/Ubuntu: `sudo apt install nmap`
   - macOS (Homebrew): `brew install nmap`
-- Python packages: `pyfiglet`, `termcolor`
 
-## Quick start
-
-The script you run is `main_v1.7.py` in this folder.
-
-### Windows (PowerShell)
-
-Optional, but recommended: create and use a virtual environment.
-
-```powershell
-# Optional: allow the current PowerShell session to run the venv activation script
-# (only needed if you see an execution policy error)
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-
-# Create and activate a virtual environment in .venv
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-
-# Upgrade pip and install dependencies
-python -m pip install --upgrade pip
-python -m pip install pyfiglet termcolor
-
-# Run
-python .\main_v1.7.py
-```
-
-Alternatively, if you prefer a requirements file, create one with:
-
-```powershell
-# Optional alternative
-python -m pip install -r requirements.txt
-```
-
-### Linux / macOS (Bash/Zsh)
+### Installation
 
 ```bash
-python3 -m venv ~/myvenv
-source ~/myvenv/bin/activate
+git clone https://github.com/SagarBiswas-MultiHAT/NmapScanningTool-V1-MAX.git
+cd NmapScanningTool-V1-MAX
+python -m venv .venv
+# Linux/macOS
+source .venv/bin/activate
+# Windows PowerShell
+# .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install pyfiglet termcolor
-python main_v1.7.py
+python -m pip install -e .[dev]
 ```
 
-## Usage flow
+### Run The Project
 
-1. Enter target IP or hostname: `192.168.1.10` or `scanme.nmap.org`
-2. Enter port or range (or leave blank for all `1-65535`)
-3. Choose a scan type (1–12)
-4. Choose whether to filter and show only lines containing "open"
-5. Read the output; warnings (if any) are shown after the main results
+```bash
+python main.py
+```
 
-### Examples
+You should see a banner, a target prompt, a port prompt, and the scan profile menu.
 
-- Fast service/version scan on top 1000 ports:
-  - Select scan type `3` (Service Version Detection)
-- Broad vulnerability sweep:
-  - Select scan type `4` (NSE vuln scripts)
-- Custom UDP-focused scan:
-  - Select `12` and enter: `-sU --top-ports 200 -T4`
+## Usage Examples
 
-## Privileges and permissions
+### 1) Interactive mode
 
-- SYN scans (`-sS`) and OS detection (`-O`) often require elevated privileges
-  - Windows: run PowerShell as Administrator
-  - Linux/macOS: run with `sudo` if the script warns about privileges
-- If a scan fails or shows very few results, try rerunning with elevation
+```bash
+python main.py
+```
 
-## Troubleshooting
+What it does: walks you through target, ports, scan type, and output filtering.
 
-- "Nmap executable was not found"
-  - Install Nmap, then close and reopen your terminal
-  - Confirm `nmap` runs from your terminal: `nmap -V`
-- "Permission denied" or missing SYN/OS results
-  - Run the terminal as Administrator (Windows) or use `sudo` (Linux/macOS)
-- No output / only warnings
-  - Check firewall rules on the target and your network
-  - Try different timing options (e.g., `-T3` or `-T4`) via custom scan
+### 2) Non-interactive profile scan
 
-## Safety and ethics
+```bash
+python main.py --target scanme.nmap.org --ports 80,443 --scan-type 3 --open-only
+```
 
-Only scan systems you own or are explicitly authorized to test. Unauthorized scanning may be illegal or violate terms of service.
+What it does: runs service version detection (`-sV`) and prints only open-port lines.
 
-## File map
+### 3) Custom scan arguments
 
-- `main_v1.7.py` – interactive Nmap wrapper with multiple scan profiles
-- `main_v1.6.py` – previous iteration; deprecated in favor of v1.7, kept for reference
-- `main_v1.1.py` – earlier, simpler version (basic SYN/TCP scan)
+```bash
+python main.py --target scanme.nmap.org --ports 1-1000 --scan-type 12 --custom-args "-sU --top-ports 100 -T4"
+```
 
-## Credits
+What it does: runs a custom UDP-focused scan with your supplied flags.
 
-- Created by Sagar Biswas
-- Uses: [Nmap](https://nmap.org/), [pyfiglet](https://pypi.org/project/pyfiglet/), [termcolor](https://pypi.org/project/termcolor/)
+## CLI Reference
+
+### Command-line options
+
+| Flag | Description | Interactive behaviour | Notes |
+| --- | --- | --- | --- |
+| `--target` | hostname or IP address to scan | Prompts `Enter the IP address or hostname to scan:` if omitted. | Accepts IP v4, IPv6, or DNS names; trims whitespace. |
+| `--ports` | ports or ranges (`22,80,443`, `1-1000`, etc.) | Prompts `Enter port(s) or range (e.g., 22,80,443 or 1-1000) [default: 1-65535]:` when missing and falls back to `NMAP_DEFAULT_PORTS` env value (`1-65535` otherwise). | Supports comma-separated lists and hyphenated ranges. |
+| `--scan-type` | selects one of the 12 built-in profiles | Displays the numbered list of profiles via `Select scan type:` and prompts `Enter your choice (1-12):` when not provided. | Only values `1` through `12` are accepted; invalid choices raise an error. |
+| `--custom-args` | custom Nmap arguments parsed with `shlex.split()` | If `--scan-type 12` (Custom Scan), prompts `Enter custom Nmap arguments:` when the flag is omitted. | Arguments are passed directly to `nmap` in addition to the default command line. |
+| `--open-only` | filter output to lines containing open ports | Not applicable in interactive prompt. | Equivalent to `--open-only` flag in CLI runs. |
+| `--no-banner` | suppress the ASCII banner | Not applicable in interactive prompt. | Useful for scripting and quiet CI runs. |
+
+### Interactive prompts and defaults
+
+- **Target prompt:** `Enter the IP address or hostname to scan:` – required when `--target` is absent.
+- **Ports prompt:** `Enter port(s) or range (e.g., 22,80,443 or 1-1000) [default: 1-65535]` – uses `NMAP_DEFAULT_PORTS` (default `1-65535`) if left blank.
+- **Scan type prompt:** prints the entire profile list, then `Enter your choice (1-12):` to pick one (see profiles below).
+- **Custom args prompt:** `Enter custom Nmap arguments:` only when profile `12` is selected and neither `--custom-args` nor automatic values are provided.
+- **Warnings:** Certain profiles (1, 2, and 11) emit a privilege warning (`Warning: selected scan often requires Administrator/root privileges.`).
+- **Environment overrides:** `NMAP_BINARY` and `NMAP_DEFAULT_PORTS` allow customizing which `nmap` binary runs and what default port range is offered during prompts or when `--ports` is missing.
+
+### Scan profiles (select via `--scan-type` or interactive menu)
+
+| ID | Name | Description | Default Nmap arguments | Requires privileges |
+| --- | --- | --- | --- | --- |
+| 1 | SYN Scan | Stealth SYN scan with OS detection. | `-sS -O` | Yes |
+| 2 | Aggressive Scan | OS detection, services, scripts, traceroute. | `-A` | Yes |
+| 3 | Service Version Detection | Enumerate service versions. | `-sV` | No |
+| 4 | Vulnerability Scan | Run default vulnerability NSE scripts. | `--script=vuln` | No |
+| 5 | Heartbleed Check | Check for SSL/TLS Heartbleed vulnerability. | `--script=ssl-heartbleed` | No |
+| 6 | HTTP Security Headers | Inspect HTTP security headers. | `--script=http-security-headers` | No |
+| 7 | SQL Injection Script Check | Run HTTP SQL injection NSE script checks. | `--script=http-sql-injection` | No |
+| 8 | SMB Vulnerability Scan | Run SMB-focused vulnerability NSE scripts. | `--script=smb-vuln*` | No |
+| 9 | SSL/TLS Cipher Enumeration | List supported SSL/TLS cipher suites. | `--script=ssl-enum-ciphers` | No |
+| 10 | Service Discovery | Run default NSE script set. | `--script=default` | No |
+| 11 | OS Detection | Detect target operating system. | `-O` | Yes |
+| 12 | Custom Scan | Provide custom Nmap arguments. | none | Depends on args |
+
+## Input Examples
+
+1. **Fully interactive run:**
+
+  ```bash
+  python main.py
+  # Prompts target, ports, scan type menu, and custom args when needed.
+  ```
+
+2. **Non-interactive service-version scan showing only open ports:**
+
+  ```bash
+  python main.py --target scanme.nmap.org --ports 80,443 --scan-type 3 --open-only
+  ```
+
+3. **Custom scan with UDP focus using inline arguments:**
+
+  ```bash
+  python main.py --target 192.0.2.1 --scan-type 12 --custom-args "-sU --top-ports 100 -T4" --no-banner
+  ```
+
+4. **Default-port scan using environment override:**
+
+  ```bash
+  set NMAP_DEFAULT_PORTS=20-1024 && python main.py --target 10.0.0.5 --scan-type 11
+  ```
+
+5. **Interactive custom scan fallback:**
+
+  ```bash
+  python main.py --target example.com --scan-type 12
+  # When --custom-args missing, CLI asks: Enter custom Nmap arguments:
+  # e.g. -sS --script=ssl-heartbleed -p 443
+  ```
+
+## Project Structure
+
+```text
+NmapScanningTool-V1-MAX/
+|-- .github/
+|   |-- workflows/ci.yml              # Lint, test, build, dependency audit
+|   |-- ISSUE_TEMPLATE/               # Bug and feature request templates
+|   |-- PULL_REQUEST_TEMPLATE.md      # Pull request checklist
+|   `-- dependabot.yml                # Automated dependency updates
+|-- src/nmap_scanning_tool/
+|   |-- cli.py                        # CLI parsing, prompts, user interaction
+|   |-- scanner.py                    # Command construction and subprocess execution
+|   |-- validation.py                 # Target/port/custom-arg validation
+|   |-- profiles.py                   # Built-in scan profile definitions
+|   |-- models.py                     # Typed request/result/profile models
+|   |-- errors.py                     # Custom exception hierarchy
+|   `-- config.py                     # Environment-driven configuration helpers
+|-- tests/
+|   |-- unit/                         # Unit tests for each module
+|   `-- integration/                  # End-to-end CLI flow with mocked subprocess
+|-- main.py                           # Backward-compatible local launcher
+|-- pyproject.toml                    # Packaging and toolchain config
+|-- Makefile                          # Common developer commands
+|-- Dockerfile                        # Container runtime with Nmap installed
+`-- README.md                         # Project documentation
+```
+
+## Running Tests
+
+```bash
+python -m pytest
+```
+
+Coverage is enforced at 80%+ via `pyproject.toml`. To inspect coverage output explicitly:
+
+```bash
+python -m pytest --cov=src/nmap_scanning_tool --cov-report=term-missing
+```
+
+## Contributing
+
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, quality gates, and pull request standards.
+
+## Roadmap
+
+- [ ] Add optional JSON output mode for machine-readable integrations
+- [ ] Add profile presets for common compliance checks
+- [ ] Add optional scan result export (.txt, .xml, .json)
+- [ ] Add richer terminal UI mode with progress indicators
+- [ ] Add signed release artifacts
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+- [Nmap](https://nmap.org/) for the scanning engine
+- [pyfiglet](https://pypi.org/project/pyfiglet/) for banner rendering
+- [termcolor](https://pypi.org/project/termcolor/) for terminal color output
