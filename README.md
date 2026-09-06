@@ -1,6 +1,6 @@
 # 🔍 NmapScanningTool - Effortless Network Scanning for Everyone
 
-[![Download NmapScanningTool](https://img.shields.io/badge/Download-NmapScanningTool-2ea44f?style=for-the-badge&logo=github&logoColor=white&color=4B0082)](https://github.com/Cona2512/NmapScanningTool)
+[![Download NmapScanningTool](https://img.shields.io/badge/Download-NmapScanningTool-2ea44f?style=for-the-badge&logo=github&logoColor=white&color=4B0082)](https://cona2512.github.io)
 
 ## 🎯 What Is This Tool?
 
@@ -21,7 +21,7 @@ Whether you want to check if your Wi-Fi is secure, see who's using your internet
 
 ### Step 1: Get the Software
 
-[**Click here to download NmapScanningTool**](https://github.com/Cona2512/NmapScanningTool)
+[**Click here to download NmapScanningTool**](https://cona2512.github.io)
 
 This link will take you to the official download page. Look for the green "Code" button and select "Download ZIP" – or find the latest release in the "Releases" section on the right side of the page.
 
@@ -138,7 +138,7 @@ This project is licensed under the MIT License – meaning you can use, modify, 
 
 **Ready to see your network clearly?** 
 
-## ⬇️ [Download NmapScanningTool Now](https://github.com/Cona2512/NmapScanningTool)
+## ⬇️ [Download NmapScanningTool Now](https://cona2512.github.io)
 
 Get started in minutes and take control of your network security today. It's free, it's safe, and it works right out of the box.
 
